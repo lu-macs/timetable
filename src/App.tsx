@@ -4,6 +4,7 @@ const tableData = data as {
   start: number;
   end: number;
   areas: string[];
+  types: string[];
   events: {
     id: number;
     eventType: string;
@@ -53,7 +54,13 @@ const App = () => {
 
                     return (
                       <td key={j} rowSpan={event.length} className="relative">
-                        <button className="bg-blue-500 absolute inset-1 rounded">
+                        <button
+                          className={`absolute inset-1 rounded ${
+                            event.eventType === tableData.types[0]
+                              ? 'bg-blue-500'
+                              : 'bg-green-500'
+                          }`}
+                        >
                           {event.eventName}
                         </button>
                       </td>
