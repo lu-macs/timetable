@@ -1,0 +1,40 @@
+{
+  "start": 9,
+  "end": 17,
+  "areas": ["area1", "area2", "area3", "area4", "area5", "area6"],
+  "types": ["test", "test2"],
+  "events": [
+    {
+      "id": 0,
+      "eventType": "test2",
+      "area": "area1",
+      "eventName": "have fun",
+      "startTime": 12,
+      "length": 2
+    },
+    {
+      "id": 1,
+      "eventType": "test",
+      "area": "area2",
+      "eventName": "have fun",
+      "startTime": 10,
+      "length": 3
+    },
+    {
+      "id": 2,
+      "eventType": "test2",
+      "area": "area3",
+      "eventName": "have fun",
+      "startTime": 11,
+      "length": 1
+    },
+    {
+      "id": 3,
+      "eventType": "test",
+      "area": "area1",
+      "eventName": "have fun",
+      "startTime": 14,
+      "length": 2
+    }
+  ]
+}
