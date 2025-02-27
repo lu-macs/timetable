@@ -4,8 +4,8 @@ import { Text } from './components/text';
 
 const App = () => {
   return (
-    <div className="flex flex-col h-screen">
-      <header className="p-4 flex items-center gap-4">
+    <div className="flex flex-col h-screen print:!bg-white">
+      <header className="p-4 flex items-center gap-4 print:hidden">
         <a
           href="/"
           className="font-bold text-2xl hover:text-muted-foreground right-click-branding"
@@ -16,6 +16,10 @@ const App = () => {
         <div className="flex-grow"></div>
         <ModeToggle />
       </header>
+      {/* print header */}
+      <div className='hidden print:block text-black'>
+        LUCC 2025
+      </div>
       <main className="relative flex-grow">
         {/* cool colour bg thing */}
         <div className="absolute left-0 top-0 -z-10 h-full w-full overflow-hidden">
@@ -49,7 +53,7 @@ const App = () => {
           </div>
         </div>
       </main>
-      <footer className="flex flex-col md:flex-row justify-center lg:gap-4 items-center text-center p-4 md:gap-2">
+      <footer className="flex flex-col md:flex-row justify-center lg:gap-4 items-center text-center p-4 md:gap-2 print:hidden">
         <span>
           © {new Date().getFullYear()} Lancaster University Magic and Circus
           Society
