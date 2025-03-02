@@ -17,9 +17,7 @@ const App = () => {
         <ModeToggle />
       </header>
       {/* print header */}
-      <div className='hidden print:block text-black'>
-        LUCC 2025
-      </div>
+      <div className="hidden print:block text-black">LUCC 2025</div>
       <main className="relative flex-grow">
         {/* cool colour bg thing */}
         <div className="absolute left-0 top-0 -z-10 h-full w-full overflow-hidden">
