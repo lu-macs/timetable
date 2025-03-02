@@ -25,19 +25,21 @@ const tableData = data as {
 
 export const Table = () => {
   return (
-    <div className="overflow-auto">
+    <div className="overflow-auto size-full">
       <table
         id="timetable"
-        className="table-fixed [&>*>*>*]:border [&>*>*>*]:border-border print:[&>*>*>*]:border-black print:[&>*>*>*]:text-black"
-        style={
-          { '--event-count': tableData.events.length } as React.CSSProperties
-        }
+        className="[&_th]:border-t [&_th]:border-b [&_th]:border-r [&_td]:border-b [&_td]:border-r [&_th:first-child]:border-l [&_td:first-child]:border-l [&>*>*>*]:border-border print:[&>*>*>*]:border-black print:[&>*>*>*]:text-black print:table-fixed size-full border-separate border-spacing-0"
       >
-        <thead className="w-full">
+        <thead>
           <tr className="h-12">
-            <th className="w-12">Time</th>
+            <th className="w-12 min-w-12 sticky left-0 bg-background z-30">
+              Time
+            </th>
             {tableData.areas.map((area) => (
-              <th key={area} className="w-48">
+              <th
+                key={area}
+                className="min-w-48 sticky top-0 bg-background z-10"
+              >
                 {area}
               </th>
             ))}
@@ -47,7 +49,7 @@ export const Table = () => {
           {Array.from({ length: tableData.end - tableData.start }).map(
             (_, i) => (
               <tr key={i} className="h-12">
-                <td>
+                <td className="sticky left-0 bg-background z-20">
                   {`${(tableData.start + i).toString().padStart(2, '0')}:00`}
                 </td>
                 {

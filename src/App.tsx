@@ -4,8 +4,9 @@ import { Text } from './components/text';
 
 const App = () => {
   return (
-    <div className="flex flex-col h-screen print:!bg-white">
+    <div className="flex flex-col print:!bg-white h-[calc(100svh+152px)] md:h-screen print:h-screen">
       <header className="p-4 flex items-center gap-4 print:hidden">
+        <ModeToggle />
         <a
           href="/"
           className="font-bold text-2xl hover:text-muted-foreground right-click-branding"
@@ -13,8 +14,6 @@ const App = () => {
         >
           <Text />
         </a>
-        <div className="flex-grow"></div>
-        <ModeToggle />
       </header>
       {/* print header */}
       <div className="hidden print:block text-black">LUCC 2025</div>

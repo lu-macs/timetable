@@ -75,12 +75,6 @@
   }
 }
 
-@media screen {
-  #timetable {
-    width: calc(3rem + 12rem * var(--event-count));
-  }
-}
-
 @media print {
   .keep-print-color {
     -webkit-print-color-adjust: exact; /* Safari/Chrome */
