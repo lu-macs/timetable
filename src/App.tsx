@@ -5,7 +5,7 @@ import { Text } from './components/text';
 const App = () => {
   return (
     <div className="flex flex-col print:!bg-white h-[calc(100svh+152px)] md:h-screen print:h-screen">
-      <header className="p-4 flex items-center gap-4 print:hidden">
+      <header className="p-4 flex items-center gap-4 print:hidden h-[72px]">
         <ModeToggle />
         <a
           href="/"
