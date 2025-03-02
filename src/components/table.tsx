@@ -1,27 +1,8 @@
+import { TableData } from '@/lib/types';
 import data from '../data.json';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from './ui/dialog';
+import { EventInfo } from './event-info';
 
-const tableData = data as {
-  start: number;
-  end: number;
-  areas: string[];
-  types: string[];
-  events: {
-    id: number;
-    eventType: string;
-    area: string;
-    eventName: string;
-    startTime: number;
-    length: number;
-  }[];
-};
+const tableData: TableData = data;
 
 export const Table = () => {
   return (
@@ -85,38 +66,12 @@ export const Table = () => {
                       }
 
                       return (
-                        <td key={j} rowSpan={event.length} className="relative">
-                          <Dialog>
-                            <DialogTrigger asChild>
-                              <button
-                                className={`absolute inset-1 rounded transition-colors keep-print-color ${
-                                  event.eventType === tableData.types[0]
-                                    ? 'bg-blue-500 hover:bg-blue-600 print:!bg-blue-500'
-                                    : 'bg-green-500 hover:bg-green-600 print:!bg-green-500'
-                                }`}
-                              >
-                                {event.eventName}
-                              </button>
-                            </DialogTrigger>
-                            <DialogContent>
-                              <DialogHeader>
-                                <DialogTitle>{event.eventName}</DialogTitle>
-                                <DialogDescription>
-                                  Starts:{' '}
-                                  {`${(tableData.start + i)
-                                    .toString()
-                                    .padStart(2, '0')}:00`}
-                                  <br />
-                                  Ends:{' '}
-                                  {`${(tableData.start + i + event.length - 1)
-                                    .toString()
-                                    .padStart(2, '0')}:00`}
-                                  <br />
-                                  Area: {event.area}
-                                </DialogDescription>
-                              </DialogHeader>
-                            </DialogContent>
-                          </Dialog>
+                        <td
+                          key={j}
+                          rowSpan={event.length}
+                          className="relative"
+                        >
+                          <EventInfo event={event} tableData={tableData} i={i} />
                         </td>
                       );
                     })
