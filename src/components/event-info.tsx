@@ -27,8 +27,31 @@ export const EventInfo = ({
   tableData: TableData;
   i: number;
 }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpenInternal] = useState(() => {
+    const localStorageEvent = localStorage.getItem('event-info');
+    return Boolean(
+      localStorageEvent && localStorageEvent === event.id.toString()
+    );
+  });
   const isDesktop = useMediaQuery('(min-width: 768px)');
+  const isPrint = useMediaQuery('print');
+
+  const setOpen = (value: boolean) => {
+    setOpenInternal(value);
+    if (value) {
+      localStorage.setItem('event-info', event.id.toString());
+    } else {
+      localStorage.removeItem('event-info');
+    }
+  };
+
+  if (isPrint && open) {
+    return (
+      <div className="z-50 fixed top-0 left-0 w-full h-full bg-background">
+        <EventText event={event} tableData={tableData} i={i} />
+      </div>
+    );
+  }
 
   if (isDesktop) {
     return (
@@ -100,9 +123,7 @@ const EventText = ({
       Starts: {`${(tableData.start + i).toString().padStart(2, '0')}:00`}
       <br />
       Ends:{' '}
-      {`${(tableData.start + i + event.length - 1)
-        .toString()
-        .padStart(2, '0')}:00`}
+      {`${(tableData.start + i + event.length).toString().padStart(2, '0')}:00`}
       <br />
       Area: {event.area}
     </>
