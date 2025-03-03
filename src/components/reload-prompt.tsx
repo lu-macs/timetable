@@ -1,8 +1,11 @@
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 
 function ReloadPrompt() {
-  const period = 60 * 1000; // check for updates every minute
+  const [swURL, setSwURL] = useState<string | null>(null);
+  const [r, setR] = useState<ServiceWorkerRegistration | null>(null);
 
   const {
     offlineReady: [, setOfflineReady],
@@ -11,14 +14,14 @@ function ReloadPrompt() {
   } = useRegisterSW({
     onRegistered(r) {
       console.log('SW Registered: ' + r);
-      if (period <= 0) return;
       if (r?.active?.state === 'activated') {
-        registerPeriodicSync(period, r.active.scriptURL, r);
+        setSwURL(r.active.scriptURL);
+        setR(r);
       } else if (r?.installing) {
         r.installing.addEventListener('statechange', (e) => {
           const sw = e.target as ServiceWorker;
-          if (sw.state === 'activated')
-            registerPeriodicSync(period, sw.scriptURL, r);
+          if (sw.state === 'activated') setSwURL(sw.scriptURL);
+          setR(r);
         });
       }
     },
@@ -46,40 +49,31 @@ function ReloadPrompt() {
     },
   });
 
+  useQuery({
+    queryKey: ['periodic-sync'],
+    queryFn: async () => {
+      if (swURL === null || r === null) return;
+
+      console.log('checking for updates');
+
+      const resp = await fetch(swURL, {
+        cache: 'no-store',
+        headers: {
+          cache: 'no-store',
+          'cache-control': 'no-cache',
+        },
+      });
+
+      if (resp?.status === 200) await r.update();
+
+      return resp;
+    },
+    enabled: swURL !== null && r !== null,
+    refetchInterval: 60 * 1000,
+    retry: true,
+  });
+
   return null;
 }
 
 export default ReloadPrompt;
-
-const checkForUpdates = async (swUrl: string, r: ServiceWorkerRegistration) => {
-  if ('onLine' in navigator && !navigator.onLine) return;
-
-  console.log('checking for updates');
-
-  const resp = await fetch(swUrl, {
-    cache: 'no-store',
-    headers: {
-      cache: 'no-store',
-      'cache-control': 'no-cache',
-    },
-  });
-
-  if (resp?.status === 200) await r.update();
-};
-
-const registerPeriodicSync = (
-  period: number,
-  swUrl: string,
-  r: ServiceWorkerRegistration
-) => {
-  if (period <= 0) return;
-
-  console.log('registering periodic sync');
-
-  // immediately check for updates
-  checkForUpdates(swUrl, r).finally(() =>
-    setInterval(async () => {
-      await checkForUpdates(swUrl, r);
-    }, period)
-  );
-};
